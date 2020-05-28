@@ -62,4 +62,4 @@ buck-out/
 .vscode
 
 #secret files
-./src/jsonFiles/Constants.js
+/src/jsonFiles/Constants.js
