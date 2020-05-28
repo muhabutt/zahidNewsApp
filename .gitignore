@@ -57,3 +57,10 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+#exclude editor config files
+.vscode
+.idea
+
+#secret files
+./src/jsonFiles/Constants.js
