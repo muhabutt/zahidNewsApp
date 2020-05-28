@@ -60,7 +60,6 @@ buck-out/
 
 #exclude editor config files
 .vscode
-.idea
 
 #secret files
 ./src/jsonFiles/Constants.js
