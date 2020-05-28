@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { TouchableOpacity, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {TouchableOpacity, Text} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import styles from '../styles/mainCss';
 
 const BackButton = () => {

@@ -1,57 +1,59 @@
 //import libraries
-import React, { Component, useEffect, useState } from 'react'
+import React, {Component} from 'react';
 
-import { View, Text, SafeAreaView, FlatList, Animated, TouchableOpacity } from 'react-native'
+import {FlatList, SafeAreaView, Text, View} from 'react-native';
 
-import styles from '../styles/mainCss'
+import styles from '../styles/mainCss';
 
+import Article from '../components/Article';
 
-import Article from '../components/Article'
-
-import * as RNLocalize from 'react-native-localize'
-import Constants from '../jsonFiles/Constants'
-import Loader from '../components/Loader'
-import Header from '../components/Header'
-import { searchWords } from '../helpers/functions'
+import * as RNLocalize from 'react-native-localize';
+import Constants from '../jsonFiles/Constants';
+import Loader from '../components/Loader';
+import Header from '../components/Header';
+import {searchWords} from '../helpers/functions';
 
 class Articles extends Component {
-  _isMounted = false
+  _isMounted = false;
   state = {
     news: [],
     countryCode: '',
     refresh: false,
-    loading: true
-  }
+    loading: true,
+  };
 
   componentDidMount() {
-    this._isMounted = true
-    this.fetchHeadlines()
+    this._isMounted = true;
+    this.fetchHeadlines();
   }
   componentWillUnmount() {
-    this._isMounted = false
+    this._isMounted = false;
   }
 
   fetchHeadlines = (countryCode, category) => {
-    let url = ''
+    let url;
 
     if (!countryCode) {
       RNLocalize.getLocales().map(item => {
-        countryCode = item.countryCode
-      })
+        countryCode = item.countryCode;
+      });
     }
     if (!category) {
-      category = ''
+      category = '';
     }
 
-    url = `${Constants.url}top-headlines?country=${countryCode}&category=${category}&apiKey=${Constants.apiKey}`
+    url = `${
+      Constants.url
+    }top-headlines?country=${countryCode}&category=${category}&apiKey=${
+      Constants.apiKey
+    }`;
 
     fetch(url)
       .then(response => {
-        return response.json()
+        return response.json();
       })
       .then(responseJson => {
-        let arr = responseJson.articles.filter(article => !searchWords(article))
-        return arr
+        return responseJson.articles.filter(article => !searchWords(article));
       })
       .then(json => {
         if (this._isMounted) {
@@ -59,26 +61,26 @@ class Articles extends Component {
             news: json,
             countryCode: countryCode,
             loading: false,
-          })
+          });
         }
       })
       .catch(error => {
-        console.error(error)
-      })
-  }
+        console.error(error);
+      });
+  };
 
   setCountry = countryCode => {
-    this.setState({ countryCode })
-  }
+    this.setState({countryCode});
+  };
 
   getLoader = () => {
     if (this._isMounted) {
-      this.setState({ loading: true })
+      this.setState({loading: true});
     }
-  }
+  };
 
   render() {
-    const { news, countryCode, refresh, loading, opacity } = this.state
+    const {news, countryCode, refresh, loading} = this.state;
     return (
       <React.Fragment>
         <Header
@@ -91,42 +93,42 @@ class Articles extends Component {
         {loading ? (
           <Loader />
         ) : (
-            <React.Fragment>
-              <Text style={[styles.article_title]}>{'Top headlines'}</Text>
+          <React.Fragment>
+            <Text style={[styles.article_title]}>{'Top headlines'}</Text>
 
-              {news.length > 0 ? (
-                <SafeAreaView style={[styles.flex1]}>
-                  <FlatList
-                    data={news}
-                    renderItem={({ item }) => (
-                      <Article
-                        navigation={this.props.navigation}
-                        article={item}
-                      />
-                    )}
-                    keyExtractor={(item, index) => 'key' + index}
-                    refreshing={refresh}
-                    onRefresh={() => {
-                      this.fetchHeadlines()
-                      setTimeout(() => {
-                        this.setState({ refresh: false })
-                      }, 3000)
-                    }}
-                  />
-                </SafeAreaView>
-              ) : (
-                  <View style={styles.article_box}>
-                    <Text style={styles.article_title}>
-                      {"Sorry we don't have any news for selected country"}
-                    </Text>
-                  </View>
-                )}
-            </React.Fragment>
-          )}
+            {news.length > 0 ? (
+              <SafeAreaView style={[styles.flex1]}>
+                <FlatList
+                  data={news}
+                  renderItem={({item}) => (
+                    <Article
+                      navigation={this.props.navigation}
+                      article={item}
+                    />
+                  )}
+                  keyExtractor={(item, index) => 'key' + index}
+                  refreshing={refresh}
+                  onRefresh={() => {
+                    this.fetchHeadlines();
+                    setTimeout(() => {
+                      this.setState({refresh: false});
+                    }, 3000);
+                  }}
+                />
+              </SafeAreaView>
+            ) : (
+              <View style={styles.article_box}>
+                <Text style={styles.article_title}>
+                  {"Sorry we don't have any news for selected country"}
+                </Text>
+              </View>
+            )}
+          </React.Fragment>
+        )}
       </React.Fragment>
-    )
+    );
   }
 }
 
 //make this component available to the app
-export default Articles
+export default Articles;

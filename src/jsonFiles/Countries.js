@@ -33,6 +33,6 @@ const Countries = {
     {name: 'United Kingdom', code: 'GB'},
     {name: 'United States', code: 'US'},
   ],
-}
+};
 
-export default Countries
+export default Countries;

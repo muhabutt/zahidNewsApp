@@ -16,6 +16,7 @@ export const searchWords = obj => {
   let words = [
     '电晕',
     '電暈',
+    'covid-19',
     'covid',
     'corona',
     'كورونا',
@@ -34,13 +35,15 @@ export const searchWords = obj => {
     'karantene',
     'карантин',
     'корона',
-    'karantän'
-
+    'karantän',
   ];
   if (obj) {
     for (let index = 0; index < words.length; index++) {
-      if (obj.title) {
+      if (obj.title && obj.description) {
         if (obj.title.toLowerCase().indexOf(words[index]) > -1) {
+          return true;
+        }
+        if (obj.description.toLowerCase().indexOf(words[index]) > -1) {
           return true;
         }
       }

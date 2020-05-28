@@ -1,6 +1,6 @@
 //import liraries
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
   View,
   Text,
@@ -8,17 +8,17 @@ import {
   ScrollView,
   Linking,
   Image,
-} from 'react-native'
-import FastImage from 'react-native-fast-image'
-import styles from '../styles/mainCss'
-import moment from 'moment'
-import Constants from '../jsonFiles/Constants'
-import {urlRegexTest} from '../helpers/functions'
+} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import styles from '../styles/mainCss';
+import moment from 'moment';
+import Constants from '../jsonFiles/Constants';
+import {urlRegexTest} from '../helpers/functions';
 
 // create a component
 const ArticleDetail = ({route, navigation}) => {
-  const {article} = route.params
-  const urlCheck = urlRegexTest(article.urlToImage)
+  const {article} = route.params;
+  const urlCheck = urlRegexTest(article.urlToImage);
 
   return (
     <SafeAreaView style={styles.flex1}>
@@ -40,7 +40,7 @@ const ArticleDetail = ({route, navigation}) => {
             <Image
               source={Constants.images.logo}
               style={styles.article_default_banner}
-              resizeMode='contain'
+              resizeMode="contain"
             />
           )}
         </React.Fragment>
@@ -72,13 +72,13 @@ const ArticleDetail = ({route, navigation}) => {
         </View>
       </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 ArticleDetail.propTypes = {
   route: PropTypes.object,
   navigation: PropTypes.object,
-}
+};
 
 //make this component available to the app
-export default ArticleDetail
+export default ArticleDetail;

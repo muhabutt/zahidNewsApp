@@ -5,6 +5,6 @@ const SubCategories = {
     {name: 'sports'},
     {name: 'technology'},
   ],
-}
+};
 
-export default SubCategories
+export default SubCategories;

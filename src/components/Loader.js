@@ -1,6 +1,6 @@
 //import liraries
 import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 import styles from '../styles/mainCss';
 
 // create a component
