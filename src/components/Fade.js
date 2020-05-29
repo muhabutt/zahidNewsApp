@@ -1,28 +1,32 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import {Animated} from 'react-native';
+import PropTypes from 'prop-types';
 
-class Fade extends PureComponent {
+class Fade extends Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: props.visible,
     };
-    this._visibility = 0;
+    this._visibility = new Animated.Value(0);
   }
-
   componentDidMount() {
-    this._visibility = new Animated.Value(this.state.visible ? 1 : 0);
+    this._visibility = new Animated.Value(this.props.visible ? 1 : 0);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.visible && !prevProps.visible) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.visible === true && prevProps.visible === false) {
       this.setState({visible: true});
     }
     Animated.timing(this._visibility, {
-      toValue: this.state.visible ? 1 : 0,
-      duration: 1000,
+      toValue: this.props.visible ? 1 : 0,
+      duration: 500,
       useNativeDriver: true,
-    }).start(this.setState({visible: this.props.visible}));
+    }).start(() => {
+      if (this.props.visible === false && prevProps.visible === true) {
+        this.setState({visible: false});
+      }
+    });
   }
 
   render() {
@@ -42,4 +46,7 @@ class Fade extends PureComponent {
     );
   }
 }
+Fade.propType = {
+  visibile: PropTypes.bool.isRequired,
+};
 export default Fade;

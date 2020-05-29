@@ -14,13 +14,16 @@ import Header from '../components/Header';
 import {searchWords} from '../helpers/functions';
 
 class Articles extends Component {
-  _isMounted = false;
-  state = {
-    news: [],
-    countryCode: '',
-    refresh: false,
-    loading: true,
-  };
+  constructor(props) {
+    super(props);
+    this._isMounted = false;
+    this.state = {
+      news: [],
+      countryCode: '',
+      refresh: false,
+      loading: true,
+    };
+  }
 
   componentDidMount() {
     this._isMounted = true;
@@ -81,6 +84,7 @@ class Articles extends Component {
 
   render() {
     const {news, countryCode, refresh, loading} = this.state;
+    const {navigation} = this.props;
     return (
       <React.Fragment>
         <Header
@@ -88,6 +92,7 @@ class Articles extends Component {
           countryCode={countryCode}
           getLoader={this.getLoader}
           fetchHeadlines={this.fetchHeadlines}
+          loading={loading}
         />
 
         {loading ? (
@@ -101,10 +106,7 @@ class Articles extends Component {
                 <FlatList
                   data={news}
                   renderItem={({item}) => (
-                    <Article
-                      navigation={this.props.navigation}
-                      article={item}
-                    />
+                    <Article navigation={navigation} article={item} />
                   )}
                   keyExtractor={(item, index) => 'key' + index}
                   refreshing={refresh}

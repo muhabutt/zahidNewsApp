@@ -69,6 +69,7 @@ const Article = ({article, navigation}) => {
 
 Article.propTypes = {
   article: PropTypes.object.isRequired,
+  navigation: PropTypes.object,
 };
 
 //make this component available to the app

@@ -7,7 +7,14 @@ import styles from '../styles/mainCss';
 import Countries from '../jsonFiles/Countries';
 
 // create a component
-const DropDown = ({setCountry, countryCode, fetchHeadlines, getLoader}) => {
+const DropDown = ({
+  setCountry,
+  countryCode,
+  fetchHeadlines,
+  getLoader,
+  setVisible,
+  visibile,
+}) => {
   return (
     <View style={styles.dropDownContainer}>
       <Picker
@@ -18,6 +25,7 @@ const DropDown = ({setCountry, countryCode, fetchHeadlines, getLoader}) => {
           }
           setCountry(itemValue);
           fetchHeadlines(itemValue);
+          setVisible(!visibile);
         }}>
         {Countries.countriesList.map((item, index) => {
           return (
@@ -34,9 +42,13 @@ const DropDown = ({setCountry, countryCode, fetchHeadlines, getLoader}) => {
 };
 
 DropDown.propTypes = {
-  setCountry: PropTypes.func,
+  setCountry: PropTypes.func.isRequired,
   country: PropTypes.string,
-  fetchHeadlines: PropTypes.func,
+  fetchHeadlines: PropTypes.func.isRequired,
+  countryCode: PropTypes.string.isRequired,
+  getLoader: PropTypes.func.isRequired,
+  setVisible: PropTypes.func.isRequired,
+  visibile: PropTypes.bool.isRequired,
 };
 //make this component available to the app
 export default DropDown;

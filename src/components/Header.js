@@ -1,39 +1,23 @@
 //import libraries
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  Text,
-  Image,
-  Animated,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import Button from '../components/Button';
 import styles from '../styles/mainCss';
 import Menu from '../components/Menu';
-import SubCategories from '../jsonFiles/SubCategories';
 import Constants from '../jsonFiles/Constants';
 import Fade from '../components/Fade';
+import Loader from './Loader';
 // create a component
-const Header = ({setCountry, countryCode, getLoader, fetchHeadlines}) => {
+const Header = ({
+  setCountry,
+  countryCode,
+  getLoader,
+  fetchHeadlines,
+  loading,
+}) => {
   const [visible, setVisible] = useState(false);
 
-  const getCategories = () => {
-    let cat = SubCategories.categories;
-    return cat.map((item, key) => (
-      <TouchableOpacity
-        key={key}
-        onPress={() => {
-          getLoader();
-          fetchHeadlines(countryCode, item.name);
-        }}>
-        <Text style={[styles.article_anchor, styles.white]}>
-          {item.name.toUpperCase()}
-        </Text>
-      </TouchableOpacity>
-    ));
-  };
   return (
     <React.Fragment>
       <View style={[styles.headerHeight]}>
@@ -83,16 +67,20 @@ const Header = ({setCountry, countryCode, getLoader, fetchHeadlines}) => {
           </View>
         </View>
       </View>
-
-      <Fade visible={visible} style={{flex: 1}}>
-        <Menu
-          setCountry={setCountry}
-          countryCode={countryCode}
-          fetchHeadlines={fetchHeadlines}
-          getLoader={getLoader}
-          getCategories={getCategories}
-        />
-      </Fade>
+      {loading ? (
+        <Loader />
+      ) : (
+        <Fade visible={visible} style={[styles.grayBackground, styles.flex1]}>
+          <Menu
+            setCountry={setCountry}
+            countryCode={countryCode}
+            fetchHeadlines={fetchHeadlines}
+            getLoader={getLoader}
+            setVisible={setVisible}
+            visible={visible}
+          />
+        </Fade>
+      )}
     </React.Fragment>
   );
 };
@@ -102,6 +90,7 @@ Header.propTypes = {
   countryCode: PropTypes.string.isRequired,
   getLoader: PropTypes.func.isRequired,
   fetchHeadlines: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 //make this component available to the app

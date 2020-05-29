@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {View} from 'react-native';
+import PropTypes from 'prop-types';
 import {createStackNavigator} from '@react-navigation/stack';
 import Articles from '../screens/Articles';
 
@@ -33,4 +34,7 @@ const Routes = navigation => {
   );
 };
 
+Routes.proptypes = {
+  navigation: PropTypes.object,
+};
 export default Routes;

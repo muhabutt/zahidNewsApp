@@ -18,6 +18,7 @@ const Button = ({label, action, css}) => {
 Button.propTypes = {
   label: PropTypes.string.isRequired,
   css: PropTypes.object,
+  action: PropTypes.func,
 };
 
 //make this component available to the app

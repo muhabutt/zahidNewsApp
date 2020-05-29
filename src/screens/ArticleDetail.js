@@ -16,7 +16,7 @@ import Constants from '../jsonFiles/Constants';
 import {urlRegexTest} from '../helpers/functions';
 
 // create a component
-const ArticleDetail = ({route, navigation}) => {
+const ArticleDetail = ({route}) => {
   const {article} = route.params;
   const urlCheck = urlRegexTest(article.urlToImage);
 
@@ -26,7 +26,6 @@ const ArticleDetail = ({route, navigation}) => {
         <React.Fragment>
           {urlCheck === true &&
           article.urlToImage &&
-          article.urlToImage !== null &&
           article.urlToImage !== '' ? (
             <FastImage
               source={{
@@ -77,7 +76,6 @@ const ArticleDetail = ({route, navigation}) => {
 
 ArticleDetail.propTypes = {
   route: PropTypes.object,
-  navigation: PropTypes.object,
 };
 
 //make this component available to the app
