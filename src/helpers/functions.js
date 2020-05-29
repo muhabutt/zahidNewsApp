@@ -16,6 +16,7 @@ export const searchWords = obj => {
   let words = [
     '电晕',
     '電暈',
+    'coronavirus',
     'covid-19',
     'covid',
     'corona',
@@ -36,14 +37,36 @@ export const searchWords = obj => {
     'карантин',
     'корона',
     'karantän',
+    'lockdown',
+    'pandemic',
+    'pandemia',
+    'muerte',
+    'mort',
+    'pandémie',
+    'pandemie',
+    'فيروس كورونا',
+    'وباء',
+    '大流行',
+    '病毒',
+    'koronavirüs',
+    'pandemi',
+    'pandemisk',
+    'koronavirus',
   ];
   if (obj) {
     for (let index = 0; index < words.length; index++) {
-      if (obj.title && obj.description) {
-        if (obj.title.toLowerCase().indexOf(words[index]) > -1) {
+      if (obj.title) {
+        if (obj.title && obj.title.toLowerCase().includes(words[index])) {
           return true;
-        }
-        if (obj.description.toLowerCase().indexOf(words[index]) > -1) {
+        } else if (
+          obj.description &&
+          obj.description.toLowerCase().includes(words[index])
+        ) {
+          return true;
+        } else if (
+          obj.content &&
+          obj.content.toLowerCase().includes(words[index])
+        ) {
           return true;
         }
       }
