@@ -20,6 +20,7 @@ class Articles extends Component {
     this.state = {
       news: [],
       countryCode: '',
+      timeZone: '',
       refresh: false,
       loading: true,
     };
@@ -35,6 +36,7 @@ class Articles extends Component {
 
   fetchHeadlines = (countryCode, category) => {
     let url;
+    const timeZone = RNLocalize.getTimeZone();
 
     if (!countryCode) {
       RNLocalize.getLocales().map(item => {
@@ -63,6 +65,7 @@ class Articles extends Component {
           this.setState({
             news: json,
             countryCode: countryCode,
+            timeZone: timeZone,
             loading: false,
           });
         }
@@ -73,7 +76,9 @@ class Articles extends Component {
   };
 
   setCountry = countryCode => {
-    this.setState({countryCode});
+    this.setState({
+      countryCode,
+    });
   };
 
   getLoader = () => {
@@ -83,7 +88,7 @@ class Articles extends Component {
   };
 
   render() {
-    const {news, countryCode, refresh, loading} = this.state;
+    const {news, countryCode, refresh, loading, timeZone} = this.state;
     const {navigation} = this.props;
     return (
       <React.Fragment>
@@ -121,7 +126,7 @@ class Articles extends Component {
             ) : (
               <View style={styles.article_box}>
                 <Text style={styles.article_title}>
-                  {"Sorry we don't have any news for selected country"}
+                  {`Sorry we don't have any news for ${timeZone}`}
                 </Text>
               </View>
             )}
