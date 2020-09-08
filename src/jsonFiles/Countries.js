@@ -9,6 +9,7 @@ const Countries = {
     {name: 'China', code: 'CN'},
     {name: 'Egypt', code: 'EG'},
     {name: 'France', code: 'FR'},
+    {name: 'Finland', code: 'FI'},
     {name: 'Germany', code: 'DE'},
     {name: 'India', code: 'IN'},
     {name: 'Ireland', code: 'IE'},

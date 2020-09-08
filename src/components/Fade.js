@@ -20,7 +20,7 @@ class Fade extends Component {
     }
     Animated.timing(this._visibility, {
       toValue: this.props.visible ? 1 : 0,
-      duration: 500,
+      duration: 200,
       useNativeDriver: true,
     }).start(() => {
       if (this.props.visible === false && prevProps.visible === true) {

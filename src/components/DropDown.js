@@ -1,54 +1,57 @@
-//import liraries
-import React from 'react';
+//import libraries
+import React, {memo} from 'react';
 import PropTypes from 'prop-types';
 import {View} from 'react-native';
 import {Picker} from '@react-native-community/picker';
 import styles from '../styles/mainCss';
 import Countries from '../jsonFiles/Countries';
+import Loader from './Loader';
 
 // create a component
-const DropDown = ({
-  setCountry,
-  countryCode,
-  fetchHeadlines,
-  getLoader,
-  setVisible,
-  visibile,
-}) => {
+const DropDown = (props) => {
+    const {
+        countryCode,
+        getNews,
+        setVisible
+    } = props;
   return (
-    <View style={styles.dropDownContainer}>
-      <Picker
-        selectedValue={countryCode}
-        onValueChange={(itemValue, itemIndex) => {
-          if (getLoader) {
-            getLoader();
-          }
-          setCountry(itemValue);
-          fetchHeadlines(itemValue);
-          setVisible(!visibile);
-        }}>
-        {Countries.countriesList.map((item, index) => {
-          return (
-            <Picker.Item
-              key={index}
-              label={item.name}
-              value={item.code.toLowerCase()}
-            />
-          );
-        })}
-      </Picker>
-    </View>
+      countryCode
+        ?
+          <View style={styles.dropDownContainer}>
+              <Picker
+                  selectedValue={countryCode}
+                  onValueChange={(itemValue) => {
+                      getNews(itemValue);
+                      setVisible(false);
+                  }}>
+                  {Countries.countriesList.map((item, index) => {
+                      return (
+                          <Picker.Item
+                              key={index}
+                              label={item.name}
+                              value={item.code.toLowerCase()}
+                          />
+                      );
+                  })}
+              </Picker>
+          </View>
+        :
+          <Loader/>
   );
 };
 
 DropDown.propTypes = {
-  setCountry: PropTypes.func.isRequired,
-  country: PropTypes.string,
-  fetchHeadlines: PropTypes.func.isRequired,
-  countryCode: PropTypes.string.isRequired,
-  getLoader: PropTypes.func.isRequired,
+  getNews: PropTypes.func.isRequired,
+  countryCode: PropTypes.string,
   setVisible: PropTypes.func.isRequired,
-  visibile: PropTypes.bool.isRequired,
 };
 //make this component available to the app
-export default DropDown;
+
+const areEqual = (prevProps, nextProps) => {
+    return (
+        prevProps.countryCode === nextProps.countryCode
+    );
+};
+const dropDown = memo(DropDown, areEqual);
+
+export default dropDown;
