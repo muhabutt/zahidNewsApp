@@ -12,8 +12,9 @@ const Loader = () => {
         styles.justify_content_center,
         styles.align_items_center,
         styles.loaderScreen,
-      ]}
-    />
+      ]}>
+      <ActivityIndicator size="large" color="#4B7A9E" />
+    </View>
   );
 };
 

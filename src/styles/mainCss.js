@@ -213,8 +213,8 @@ export const colors = StyleSheet.create({
     color: 'white',
   },
   loaderScreen: {
-    backgroundColor: '#4B7A9E',
-    opacity: 1,
+    backgroundColor: '#82A9C6',
+    opacity: 0.5,
   },
 });
 
