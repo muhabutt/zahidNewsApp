@@ -18,23 +18,25 @@ const NewsReducer = (state = initialState, action) => {
     case GET_NEWS:
       return {
         ...state,
-        ...action.payload,
         news: action.payload.news,
-        timeZone: action.payload.timeZone,
-        refresh: action.payload.ref,
+        countryCode: action.payload.countryCode,
         loading: action.payload.loading,
         category: action.payload.category,
+        timeZone: action.payload.timeZone,
       };
     case SET_LOADING:
       return {
+        ...state,
         loading: action.payload.loading,
       };
     case SET_COUNTRY_CODE:
       return {
+        ...state,
         countryCode: action.payload.countryCode,
       };
     case SET_CATEGORY:
       return {
+        ...state,
         category: action.payload.category,
       };
     default:

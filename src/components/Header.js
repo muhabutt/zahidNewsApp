@@ -1,18 +1,37 @@
 //import libraries
-import React, {useState, memo} from 'react';
-import PropTypes from 'prop-types';
-import {View, Text, Image} from 'react-native';
-import Button from '../components/Button';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  UIManager,
+  LayoutAnimation,
+  Platform,
+} from 'react-native';
 import styles from '../styles/mainCss';
 import Menu from '../components/Menu';
 import Constants from '../jsonFiles/Constants';
-import Fade from '../components/Fade';
-import {connect} from 'react-redux';
-import {getNews} from '../redux/Actions';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faBars} from '@fortawesome/free-solid-svg-icons';
+
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
 // create a component
 const Header = (props) => {
   const [visible, setVisible] = useState(false);
-  const {countryCode, getNews, category} = props;
+  const {foundNews} = props;
+
+  const toggleBox = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setVisible(!visible);
+  };
+
   return (
     <React.Fragment>
       <View style={[styles.headerHeight]}>
@@ -52,54 +71,30 @@ const Header = (props) => {
               styles.justify_content_center,
               styles.align_items_end,
             ]}>
-            <Button
-              css={(styles.font35, styles.white)}
-              label={'Menu'}
-              action={() => {
-                setVisible(!visible);
-              }}
-            />
+            <TouchableOpacity
+              onPress={() => {
+                toggleBox();
+              }}>
+              <FontAwesomeIcon icon={faBars} size={40} color={'#ffffff'} />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
-      <Fade visible={visible} style={[styles.grayBackground, styles.flex1]}>
-        <Menu
-          countryCode={countryCode}
-          getNews={getNews}
-          setVisible={setVisible}
-          category={category}
-        />
-      </Fade>
+      {visible ? (
+        <View
+          style={[
+            styles.grayBackground,
+
+            visible ? styles.openMenu : null,
+            foundNews ? styles.flex1 : styles.dropDownHeight,
+          ]}>
+          <Menu toggleBox={toggleBox} />
+        </View>
+      ) : (
+        <React.Fragment />
+      )}
     </React.Fragment>
   );
 };
 
-Header.propTypes = {
-  countryCode: PropTypes.string,
-  getNews: PropTypes.func.isRequired,
-  category: PropTypes.string,
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  getNews: (countryCode, category) => {
-    dispatch(getNews(countryCode, category));
-  },
-});
-
-const mapStateToProps = (state) => {
-  return {
-    news: state.news.news,
-    countryCode: state.news.countryCode,
-    timeZone: state.news.timeZone,
-    category: state.news.category,
-  };
-};
-const areEqual = (prevProps, nextProps) => {
-  return (
-    prevProps.countryCode === nextProps.countryCode &&
-    prevProps.category === nextProps.category
-  );
-};
-const header = memo(Header, areEqual);
-
-export default connect(mapStateToProps, mapDispatchToProps)(header);
+export default Header;

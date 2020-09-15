@@ -1,20 +1,16 @@
 //import libraries
-import React, {memo} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  SafeAreaView,
-  ScrollView,
-} from 'react-native';
+import {Text, TouchableOpacity, SafeAreaView, ScrollView} from 'react-native';
 import styles from '../styles/mainCss';
 import SubCategories from '../jsonFiles/SubCategories';
 import DropDown from '../components/DropDown';
+import {connect} from 'react-redux';
+import {getNews} from '../redux/Actions';
 
 // create a component
 const Menu = (props) => {
-  const {countryCode, getNews, setVisible, category, setLoading} = props;
+  const {countryCode, getNews, toggleBox, category, news} = props;
 
   const getCategories = () => {
     let cat = SubCategories.categories;
@@ -22,8 +18,8 @@ const Menu = (props) => {
       <TouchableOpacity
         key={key}
         onPress={() => {
+          toggleBox();
           getNews(countryCode, item.name);
-          setVisible(false);
         }}>
         <Text
           style={[
@@ -37,33 +33,38 @@ const Menu = (props) => {
   };
 
   return (
-    <View style={[styles.grayBackground, styles.flex1]}>
-      <DropDown
-        countryCode={countryCode}
-        getNews={getNews}
-        setVisible={setVisible}
-      />
-      <SafeAreaView style={[styles.flex1, styles.pl15, styles.pr15]}>
-        <ScrollView>{getCategories()}</ScrollView>
-      </SafeAreaView>
-    </View>
+    <React.Fragment>
+      <DropDown toggleBox={toggleBox} />
+      {news.length > 0 ? (
+        <SafeAreaView style={[styles.flex1, styles.pl15, styles.pr15]}>
+          <ScrollView>{getCategories()}</ScrollView>
+        </SafeAreaView>
+      ) : (
+        <React.Fragment />
+      )}
+    </React.Fragment>
   );
 };
 
 Menu.propTypes = {
-  setVisible: PropTypes.func.isRequired,
+  toggleBox: PropTypes.func.isRequired,
   countryCode: PropTypes.string,
-  getNews: PropTypes.func.isRequired,
+  getNews: PropTypes.func,
   category: PropTypes.string,
-  setLoading: PropTypes.func,
+  news: PropTypes.array,
 };
 
-const areEqual = (prevProps, nextProps) => {
-  return (
-    prevProps.countryCode === nextProps.countryCode &&
-    prevProps.category === nextProps.category
-  );
+const mapStateToProps = (state) => {
+  return {
+    countryCode: state.news.countryCode,
+    category: state.news.category,
+    news: state.news.news,
+  };
 };
-const menu = memo(Menu, areEqual);
+const mapDispatchToProps = (dispatch) => ({
+  getNews: (countryCode, category) => {
+    dispatch(getNews(countryCode, category));
+  },
+});
 
-export default menu;
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);

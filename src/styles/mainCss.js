@@ -3,6 +3,12 @@ let {width, height} = Dimensions.get('window');
 
 // define your styles
 const base = StyleSheet.create({
+  openMenu: {
+    width: '100%',
+  },
+  dropDownHeight: {
+    height: height * 0.12,
+  },
   headerHeight: {
     height: height * 0.08,
   },

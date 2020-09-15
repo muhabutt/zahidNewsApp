@@ -1,21 +1,23 @@
 //import libraries
-import React, {memo} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {View} from 'react-native';
 import {Picker} from '@react-native-community/picker';
 import styles from '../styles/mainCss';
 import Countries from '../jsonFiles/Countries';
+import {connect} from 'react-redux';
+import {getNews} from '../redux/Actions';
 
 // create a component
 const DropDown = (props) => {
-  const {countryCode, getNews, setVisible} = props;
+  const {countryCode, getNews, toggleBox} = props;
   return (
     <View style={styles.dropDownContainer}>
       <Picker
         selectedValue={countryCode}
         onValueChange={(itemValue) => {
+          toggleBox();
           getNews(itemValue);
-          setVisible(false);
         }}>
         {Countries.countriesList.map((item, index) => {
           return (
@@ -30,13 +32,19 @@ const DropDown = (props) => {
 DropDown.propTypes = {
   getNews: PropTypes.func.isRequired,
   countryCode: PropTypes.string,
-  setVisible: PropTypes.func.isRequired,
+  toggleBox: PropTypes.func.isRequired,
 };
 //make this component available to the app
 
-const areEqual = (prevProps, nextProps) => {
-  return prevProps.countryCode === nextProps.countryCode;
+const mapStateToProps = (state) => {
+  return {
+    countryCode: state.news.countryCode,
+  };
 };
-const dropDown = memo(DropDown, areEqual);
+const mapDispatchToProps = (dispatch) => ({
+  getNews: (countryCode) => {
+    dispatch(getNews(countryCode));
+  },
+});
 
-export default dropDown;
+export default connect(mapStateToProps, mapDispatchToProps)(DropDown);

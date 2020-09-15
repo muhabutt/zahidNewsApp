@@ -1,12 +1,13 @@
 //import libraries
 import React, {useState, useEffect, memo} from 'react';
 import {connect} from 'react-redux';
-import {getNews, setCountryCode} from '../redux/Actions';
+import {getNews} from '../redux/Actions';
 import {FlatList, SafeAreaView, Text, View} from 'react-native';
 import styles from '../styles/mainCss';
 import Article from '../components/Article';
 import Loader from '../components/Loader';
 import Header from '../components/Header';
+import PropTypes from 'prop-types';
 
 const Articles = (props) => {
   const [refresh, setRefresh] = useState(false);
@@ -17,7 +18,6 @@ const Articles = (props) => {
     timeZone,
     countryCode,
     getNews,
-    setCountryCode,
     category,
   } = props;
   useEffect(() => {
@@ -25,15 +25,11 @@ const Articles = (props) => {
   }, []);
   return (
     <React.Fragment>
+      <Header foundNews={news.length > 0 ? true : false} />
       {loading ? (
         <Loader />
       ) : (
         <React.Fragment>
-          <Header
-            setCountryCode={setCountryCode}
-            countryCode={countryCode}
-            getNews={getNews}
-          />
           <Text
             style={[
               styles.article_title,
@@ -67,6 +63,15 @@ const Articles = (props) => {
   );
 };
 
+Articles.propTypes = {
+  countryCode: PropTypes.string,
+  getNews: PropTypes.func,
+  category: PropTypes.string,
+  news: PropTypes.array,
+  timeZone: PropTypes.string,
+  loading: PropTypes.bool,
+};
+
 const mapStateToProps = (state) => {
   return {
     news: state.news.news,
@@ -80,17 +85,8 @@ const mapDispatchToProps = (dispatch) => ({
   getNews: (countryCode, category) => {
     dispatch(getNews(countryCode, category));
   },
-  setCountryCode: (value) => {
-    dispatch(setCountryCode(value));
-  },
 });
 
-const areEqual = (prevProps, nextProps) => {
-  return (
-    prevProps.countryCode === nextProps.countryCode &&
-    prevProps.category === nextProps.category
-  );
-};
-const articles = memo(Articles, areEqual);
+const articles = memo(Articles);
 
 export default connect(mapStateToProps, mapDispatchToProps)(articles);

@@ -5,7 +5,7 @@ import * as RNLocalize from 'react-native-localize';
 import Countries from '../../jsonFiles/Countries';
 
 export const getNews = (countryCode, category) => {
-  return async (dispatch) => {
+  return (dispatch) => {
     const payLoad = {
       loading: true,
     };
@@ -64,7 +64,7 @@ export const getNews = (countryCode, category) => {
 };
 
 export const setLoading = (value) => {
-  return async (dispatch) => {
+  return (dispatch) => {
     const payLoad = {
       loading: value,
     };
@@ -77,7 +77,7 @@ export const setLoading = (value) => {
 };
 
 export const setCountryCode = (value) => {
-  return async (dispatch) => {
+  return (dispatch) => {
     const payLoad = {
       countryCode: value,
     };
@@ -90,7 +90,7 @@ export const setCountryCode = (value) => {
 };
 
 export const setCategory = (value) => {
-  return async (dispatch) => {
+  return (dispatch) => {
     const payLoad = {
       category: value,
     };
