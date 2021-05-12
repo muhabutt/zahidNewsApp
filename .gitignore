@@ -63,3 +63,7 @@ buck-out/
 
 #secret files
 /src/jsonFiles/Constants.js
+
+#lock files
+package-lock.json
+yan-lock.json
