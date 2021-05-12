@@ -66,4 +66,4 @@ buck-out/
 
 #lock files
 package-lock.json
-yan-lock.json
+yarn.lock
